@@ -1,0 +1,27 @@
+import React from "react";
+import { Provider } from "react-redux";
+import "./App.css";
+import AppRouter from "./routers/AppRouter";
+import configureStore from "./store/configureStore";
+import { addExpenses } from "./actions/expenses";
+import getVisibleExpenses from "./selectors/expenses";
+import filtersReducer from "./reducers/filters";
+function App() {
+  const store = configureStore();
+  store.dispatch(addExpenses({ description: "water bill" }));
+  store.dispatch(addExpenses({ description: "gas bill" }));
+  store.dispatch(addExpenses({ description: "home rent" }));
+
+  // store.dispatch(setTextFilter("water"));
+  const state = store.getState();
+  console.log(state);
+  const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
+  console.log(visibleExpenses);
+  return (
+    <div>
+      <AppRouter />
+    </div>
+  );
+}
+
+export default App;
